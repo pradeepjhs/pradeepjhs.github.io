@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pradeep Kumar Agrawal — IT Infrastructure & Operations Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy:   #0A1628;
+    --blue:   #1A3A5C;
+    --accent: #2E8BC0;
+    --gold:   #C9A84C;
+    --light:  #E8EEF4;
+    --muted:  #7A8FA6;
+    --white:  #F5F8FB;
+    --card:   #111D2E;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--light);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── GRID NOISE TEXTURE ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 70% 10%, rgba(46,139,192,0.10) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 10% 80%, rgba(201,168,76,0.06) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 4rem;
+    height: 64px;
+    background: rgba(10,22,40,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(46,139,192,0.15);
+  }
+  .nav-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    letter-spacing: 0.02em;
+  }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 4rem 4rem;
+    z-index: 1;
+  }
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .hero-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.2s forwards;
+  }
+  .hero-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    line-height: 1.08;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.35s forwards;
+  }
+  .hero-name span { color: var(--gold); }
+  .hero-title {
+    font-size: 1rem;
+    color: var(--muted);
+    font-weight: 400;
+    margin-bottom: 1.8rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.5s forwards;
+  }
+  .hero-title strong { color: var(--accent); font-weight: 500; }
+  .hero-desc {
+    font-size: 0.95rem;
+    color: #99AFC4;
+    line-height: 1.8;
+    max-width: 500px;
+    margin-bottom: 2.2rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.65s forwards;
+  }
+  .hero-cta {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.8s forwards;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.7rem 1.6rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: all 0.22s;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover { background: #2478a8; transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent;
+    color: var(--light);
+    border: 1px solid rgba(46,139,192,0.4);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Stats cards in hero */
+  .hero-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.9s forwards;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid rgba(46,139,192,0.18);
+    border-radius: 10px;
+    padding: 1.4rem 1.2rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .stat-card:hover { transform: translateY(-3px); border-color: rgba(46,139,192,0.45); }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--gold));
+  }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.2rem;
+    color: var(--white);
+    line-height: 1;
+  }
+  .stat-num span { color: var(--gold); }
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 0.4rem;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    position: relative; z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 5rem 4rem;
+  }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--white);
+    margin-bottom: 2.5rem;
+    position: relative;
+    padding-bottom: 1rem;
+  }
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 48px; height: 2px;
+    background: var(--accent);
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 100%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(46,139,192,0.2), transparent);
+    margin: 0 auto;
+    max-width: 1100px;
+    padding: 0 4rem;
+  }
+
+  /* ── SKILLS ── */
+  .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .skill-tag {
+    background: rgba(46,139,192,0.08);
+    border: 1px solid rgba(46,139,192,0.25);
+    color: #A8C4DC;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.02em;
+    transition: all 0.18s;
+    cursor: default;
+  }
+  .skill-tag:hover {
+    background: rgba(46,139,192,0.2);
+    color: var(--white);
+    border-color: var(--accent);
+    transform: translateY(-1px);
+  }
+
+  /* ── EXPERIENCE ── */
+  .exp-timeline { position: relative; padding-left: 2rem; }
+  .exp-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 8px; bottom: 8px;
+    width: 1px;
+    background: linear-gradient(180deg, var(--accent), transparent);
+  }
+  .exp-item {
+    position: relative;
+    margin-bottom: 2.8rem;
+    padding-left: 1.5rem;
+  }
+  .exp-item::before {
+    content: '';
+    position: absolute;
+    left: -2.45rem; top: 6px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--navy);
+    box-shadow: 0 0 0 3px rgba(46,139,192,0.2);
+  }
+  .exp-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    flex-wrap: wrap; gap: 0.3rem;
+    margin-bottom: 0.3rem;
+  }
+  .exp-role {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--white);
+  }
+  .exp-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--gold);
+    padding: 0.2rem 0.6rem;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .exp-company {
+    font-size: 0.88rem;
+    color: var(--accent);
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+  }
+  .exp-location {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 0.8rem;
+  }
+  .exp-bullets { list-style: none; }
+  .exp-bullets li {
+    font-size: 0.88rem;
+    color: #8FA8BF;
+    padding: 0.3rem 0;
+    padding-left: 1rem;
+    position: relative;
+    line-height: 1.65;
+  }
+  .exp-bullets li::before {
+    content: '▸';
+    position: absolute; left: 0;
+    color: var(--accent);
+    font-size: 0.7rem;
+    top: 0.38rem;
+  }
+
+  /* ── CERTS ── */
+  .certs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+  .cert-card {
+    background: var(--card);
+    border: 1px solid rgba(46,139,192,0.15);
+    border-radius: 8px;
+    padding: 1.2rem 1.4rem;
+    display: flex; align-items: flex-start; gap: 1rem;
+    transition: all 0.2s;
+  }
+  .cert-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-2px); }
+  .cert-icon {
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(46,139,192,0.3), rgba(201,168,76,0.15));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .cert-name {
+    font-size: 0.88rem;
+    color: var(--light);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .cert-issuer {
+    font-size: 0.76rem;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+
+  /* ── CONTACT ── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+  .contact-card {
+    background: var(--card);
+    border: 1px solid rgba(46,139,192,0.15);
+    border-radius: 8px;
+    padding: 1.2rem;
+    text-decoration: none;
+    display: flex; align-items: center; gap: 0.9rem;
+    transition: all 0.2s;
+  }
+  .contact-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .contact-icon {
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    background: rgba(46,139,192,0.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .contact-label { font-size: 0.75rem; color: var(--muted); }
+  .contact-value { font-size: 0.88rem; color: var(--light); font-weight: 500; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.78rem;
+    color: var(--muted);
+    border-top: 1px solid rgba(46,139,192,0.1);
+    position: relative; z-index: 1;
+  }
+  footer span { color: var(--accent); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 0 1.5rem; }
+    .nav-links { display: none; }
+    .hero { padding: 6rem 1.5rem 3rem; }
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-stats { order: -1; }
+    section { padding: 3.5rem 1.5rem; }
+    .exp-header { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">PKA</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="#certifications">Certs</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="about">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-label">// IT Infrastructure & Operations</div>
+      <h1 class="hero-name">Pradeep<br><span>Kumar</span> Agrawal</h1>
+      <p class="hero-title">
+        <strong>IT Infrastructure & Operations Manager</strong> &nbsp;·&nbsp; 15+ Years
+      </p>
+      <p class="hero-desc">
+        Dynamic IT operations leader managing large-scale, multi-site environments — 60+ servers, 80+ network devices, 3,000+ nodes at 99.95% SLA. Driving compliance, cloud strategy, and high-performing teams across global organizations.
+      </p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#experience">View Experience</a>
+        <a class="btn btn-outline" href="https://linkedin.com/in/pradeepjhs" target="_blank">LinkedIn Profile</a>
+        <a class="btn btn-outline" href="mailto:pradeepjhs@hotmail.com">Get in Touch</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-num">15<span>+</span></div>
+        <div class="stat-label">Years of IT Leadership Experience</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">99.95<span>%</span></div>
+        <div class="stat-label">SLA Compliance Maintained</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">3K<span>+</span></div>
+        <div class="stat-label">Nodes Under Management</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">5<span>×</span></div>
+        <div class="stat-label">Compliance Frameworks: PCI-DSS · ISO · SOC · HIPAA · ISMS</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">// Core Competencies</div>
+  <h2 class="section-title reveal">Technical Skills</h2>
+  <div class="skills-grid reveal">
+    <span class="skill-tag">IT Infrastructure Management</span>
+    <span class="skill-tag">AWS Cloud</span>
+    <span class="skill-tag">VMware / ESXi</span>
+    <span class="skill-tag">Active Directory</span>
+    <span class="skill-tag">Linux Administration</span>
+    <span class="skill-tag">SCCM / WSUS</span>
+    <span class="skill-tag">Veeam Backup & Replication</span>
+    <span class="skill-tag">FortiSIEM</span>
+    <span class="skill-tag">Fortinet / Cisco Firepower</span>
+    <span class="skill-tag">Zabbix</span>
+    <span class="skill-tag">Kibana / ELK Stack</span>
+    <span class="skill-tag">LogicMonitor</span>
+    <span class="skill-tag">ThousandEyes</span>
+    <span class="skill-tag">Jira / Confluence</span>
+    <span class="skill-tag">ITIL V4</span>
+    <span class="skill-tag">PCI-DSS</span>
+    <span class="skill-tag">ISO 27001 / ISMS</span>
+    <span class="skill-tag">SOC Compliance</span>
+    <span class="skill-tag">HIPAA</span>
+    <span class="skill-tag">Service Desk Management</span>
+    <span class="skill-tag">Change & Incident Management</span>
+    <span class="skill-tag">Vendor Negotiation</span>
+    <span class="skill-tag">CAPEX / OPEX Budgeting</span>
+    <span class="skill-tag">Team Leadership</span>
+    <span class="skill-tag">NOC Monitoring</span>
+    <span class="skill-tag">NAS / Storage Solutions</span>
+    <span class="skill-tag">Windows Server 2003–2022</span>
+    <span class="skill-tag">Smokeping</span>
+    <span class="skill-tag">Rancid Backup</span>
+    <span class="skill-tag">SQL Server</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">// Career History</div>
+  <h2 class="section-title reveal">Professional Experience</h2>
+
+  <div class="exp-timeline">
+
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div class="exp-role">Manager – IT Infrastructure & Operations</div>
+        <div class="exp-date">Nov 2023 – Present</div>
+      </div>
+      <div class="exp-company">Mahendra Next Wealth IT India Pvt Ltd</div>
+      <div class="exp-location">📍 Jaipur, Rajasthan, India</div>
+      <ul class="exp-bullets">
+        <li>Lead end-to-end IT infrastructure operations for a multi-site environment, overseeing server, network, cloud, and endpoint systems serving 500+ users.</li>
+        <li>Achieved 99.95% SLA compliance by deploying proactive monitoring via LogicMonitor and Zabbix — reducing MTTR by 35%.</li>
+        <li>Directed ITIL V4-aligned Change, Incident, Problem, and Access Management — cutting P1 incidents by 40% YoY.</li>
+        <li>Negotiated vendor contracts with Cisco, Microsoft, and VMware delivering 20%+ cost savings while maintaining SLA standards.</li>
+        <li>Led PCI-DSS, ISO 27001, SOC, ISMS, and HIPAA audit readiness with zero critical findings in the most recent cycle.</li>
+        <li>Designed IT training programs for a team of 12+, improving first-call resolution rates by 25%.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div class="exp-role">Assistant Manager – Information Technology</div>
+        <div class="exp-date">Feb 2021 – Nov 2023</div>
+      </div>
+      <div class="exp-company">Jumio Corporation</div>
+      <div class="exp-location">📍 Jaipur, Rajasthan, India</div>
+      <ul class="exp-bullets">
+        <li>Managed 60+ servers and 80+ network devices across global locations — maintaining 99.95% SLA for 3,000+ nodes.</li>
+        <li>Delivered L2/L3 support across ESXi, NAS, AWS, Veeam, SCCM, Kibana, LogicMonitor, and ThousandEyes with zero unplanned outages.</li>
+        <li>Coordinated PCI-DSS and ISO compliance activities including quarterly audits and security incident investigations.</li>
+        <li>Optimized annual CAPEX/OPEX budgets, reducing IT spend by 15% without impacting service quality.</li>
+        <li>Reduced asset refresh backlog by 60% through improved procurement and decommissioning processes.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div class="exp-role">Assistant Manager – Information Technology</div>
+        <div class="exp-date">May 2019 – Feb 2021</div>
+      </div>
+      <div class="exp-company">Teleperformance India</div>
+      <div class="exp-location">📍 Jaipur, Rajasthan, India</div>
+      <ul class="exp-bullets">
+        <li>Managed IT operations for a 1,000+ seat BPO — 99.9% uptime across Windows Server, AD, DNS, DHCP, WSUS, GPO.</li>
+        <li>Implemented ITIL-aligned Change and Incident Management — reducing unplanned downtime by 30% in 6 months.</li>
+        <li>Led and mentored a team of 8 IT professionals, reducing escalations by 20% through structured knowledge transfer.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div class="exp-role">Assistant Manager – IT Operations</div>
+        <div class="exp-date">Aug 2013 – May 2019</div>
+      </div>
+      <div class="exp-company">Extramarks Education India Pvt. Ltd.</div>
+      <div class="exp-location">📍 Jaipur, Rajasthan, India</div>
+      <ul class="exp-bullets">
+        <li>Managed IT support across a zonal network of 50+ school sites, leading field engineers and support coordinators.</li>
+        <li>Reduced escalation rates by 35% through SLA-based ticketing workflows and first-visit resolution enforcement.</li>
+        <li>Consistently met deployment timelines across hardware/software rollouts at 50+ locations.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div class="exp-role">Zonal Incharge – North</div>
+        <div class="exp-date">Apr 2011 – Jul 2013</div>
+      </div>
+      <div class="exp-company">ITMantra TechIntellect Pvt. Ltd.</div>
+      <div class="exp-location">📍 North India</div>
+      <ul class="exp-bullets">
+        <li>Provided L2 & L3 infrastructure support across 10 multi-city sites — servers, networks, SQL databases, IVR, VPN.</li>
+        <li>Conducted remote/on-site audits ensuring 100% compliance with company configuration standards.</li>
+      </ul>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div class="exp-role">Customer Support Executive</div>
+        <div class="exp-date">Jan 2010 – Mar 2011</div>
+      </div>
+      <div class="exp-company">ITMantra TechIntellect Pvt. Ltd.</div>
+      <div class="exp-location">📍 North India</div>
+      <ul class="exp-bullets">
+        <li>Managed a 50-PC domain network — Active Directory, VPN, SQL replication, EPABX, backup operations.</li>
+        <li>Maintained IT stock inventory and coordinated with vendors for timely issue resolution.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-label">// Credentials</div>
+  <h2 class="section-title reveal">Certifications</h2>
+  <div class="certs-grid reveal">
+    <div class="cert-card">
+      <div class="cert-icon">🏅</div>
+      <div>
+        <div class="cert-name">ITIL V4 Foundation</div>
+        <div class="cert-issuer">Axelos</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">☁️</div>
+      <div>
+        <div class="cert-name">AWS Cloud Practitioner Essentials</div>
+        <div class="cert-issuer">Amazon Web Services</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">🐧</div>
+      <div>
+        <div class="cert-name">Red Hat Certified Engineer (RHCE)</div>
+        <div class="cert-issuer">Red Hat</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">🖥️</div>
+      <div>
+        <div class="cert-name">Microsoft Certified Professional (MCP)</div>
+        <div class="cert-issuer">Microsoft</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">🔐</div>
+      <div>
+        <div class="cert-name">CybSafe Security Awareness Certification</div>
+        <div class="cert-issuer">CybSafe</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EDUCATION -->
+<section>
+  <div class="section-label">// Academic Background</div>
+  <h2 class="section-title reveal">Education</h2>
+  <div class="exp-timeline">
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div class="exp-role">Bachelor of Computer Applications (BCA)</div>
+        <div class="exp-date">2015 – 2018</div>
+      </div>
+      <div class="exp-company">Sam Higginbottom Institute of Agriculture, Technology & Sciences</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">// Get In Touch</div>
+  <h2 class="section-title reveal">Contact</h2>
+  <div class="contact-grid reveal">
+    <a class="contact-card" href="mailto:pradeepjhs@hotmail.com">
+      <div class="contact-icon">✉️</div>
+      <div>
+        <div class="contact-label">Email</div>
+        <div class="contact-value">pradeepjhs@hotmail.com</div>
+      </div>
+    </a>
+    <a class="contact-card" href="tel:+919782401871">
+      <div class="contact-icon">📞</div>
+      <div>
+        <div class="contact-label">Phone</div>
+        <div class="contact-value">+91 9782401871</div>
+      </div>
+    </a>
+    <a class="contact-card" href="https://linkedin.com/in/pradeepjhs" target="_blank">
+      <div class="contact-icon">💼</div>
+      <div>
+        <div class="contact-label">LinkedIn</div>
+        <div class="contact-value">linkedin.com/in/pradeepjhs</div>
+      </div>
+    </a>
+    <div class="contact-card" style="cursor:default">
+      <div class="contact-icon">📍</div>
+      <div>
+        <div class="contact-label">Location</div>
+        <div class="contact-value">Jaipur, Rajasthan, India</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Pradeep Kumar Agrawal &nbsp;·&nbsp; IT Infrastructure & Operations Manager &nbsp;·&nbsp; <span>Open to Opportunities</span></p>
+  <p style="margin-top:0.4rem; font-size:0.72rem;">Jaipur, India &nbsp;·&nbsp; pradeepjhs@hotmail.com</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
